@@ -15,7 +15,9 @@ var parseQueryString = function(url) {
 
 var urlParams = parseQueryString(location.search);
 
-//Category Class
+
+//Three classes for managing different aspects of app.
+
 
 function CategoryManager() {
 
@@ -73,17 +75,8 @@ function CategoryManager() {
 };
 
 
-//Instantiate and initialize class
-
-var categoryManager = new CategoryManager();
-categoryManager.init();
-
-
 //------------------------------------------------------
 
-
-
-//Book Class
 
 function BookManager() {
 
@@ -147,17 +140,9 @@ function BookManager() {
     };
 };
 
-//Instantiate and initialize class
 
-var bookManager = new BookManager();
-bookManager.init();
+//------------------------------------------------------
 
-
-/*-------------------------------------------------------*/
-
-
-
-//Shopping Cart Class
 
 
 function CartManager() {
@@ -181,6 +166,7 @@ function CartManager() {
     this.deleteAll = function() {
         $('#emptyCart').on('click', function() {
             $('#tbody').html('');
+            $('#totalSum').text('00.00');
             localStorage.clear();
         });
     };
@@ -188,11 +174,12 @@ function CartManager() {
     //Add click listener for deleting specific book from cart
 
     this.deleteSpecific = function() {
-    	var that = this;
+        var that = this;
         $(document).on('click', '.delSpecific', function() {
             $(this).parent().remove();
             var key = $(this).siblings('.book_id').text();
             localStorage.removeItem("book" + key);
+            that.cartAppender();
         });
     };
 
@@ -201,8 +188,8 @@ function CartManager() {
     this.bookToLocalStorage = function() {
         var that = this;
         $('#buy_book').on('click', function() {
-            localStorage.setItem("book" + bookManager.currentBook.id, JSON.stringify(bookManager.currentBook));
-            alert(bookManager.currentBook.title + " has been added to your cart.")
+            localStorage.setItem("book" + shopManager.bookManager.currentBook.id, JSON.stringify(shopManager.bookManager.currentBook));
+            alert(shopManager.bookManager.currentBook.title + " has been added to your cart.")
         });
     };
 
@@ -212,18 +199,21 @@ function CartManager() {
     this.cartAppender = function() {
         var that = this;
         $(document).ready(function() {
-
+            $('#tbody').html('');
+            that.books = [];            
             for (var i = 0; i < localStorage.length; i++) {
                 var key = localStorage.key(i);
                 var value = localStorage[key];
                 that.books.push(JSON.parse(value));
             };
 
+
             var allRows = [];
             var sum = 0;
             $.each(that.books, function(i, e) {
                 var row = $('<tr>');
                 row.append($('<td>').addClass('book_id').text(e.id));
+                row.append($('<td>').append($('<img>').attr('src', e.image).attr('height', '100px')));
                 row.append($('<td>').text(e.title));
                 row.append($('<td>').text(e.author));
                 row.append($('<td>').text(e.price + "$"));
@@ -233,13 +223,30 @@ function CartManager() {
             });
             $('#tbody').append(allRows);
             var total = sum.toFixed(2);
-            $('#totalSum').text(total+'$');
+            $('#totalSum').text(total + '$');
         });
     };
 };
 
+//------------------------------------------------------
 
-//Instantiate class
 
-var cartManager = new CartManager();
-cartManager.init();
+
+//The One class to rule them all (:
+
+function ShopManager() {
+
+    this.cartManager = new CartManager();
+    this.bookManager = new BookManager();
+    this.categoryManager = new CategoryManager();
+
+    this.init = function() {
+        this.bookManager.init();
+        this.categoryManager.init();
+        this.cartManager.init();
+
+    };
+};
+
+var shopManager = new ShopManager();
+shopManager.init();
