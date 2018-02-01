@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/back.jpg');
+    background-attachment: fixed;
+}
+
+#header {
+    background-image: url('../images/books.jpg');
+    padding: 30px 0px 60px 0;
+}
+
+#header h1,
+#header p {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+
+h1 {
+	margin-top: 60px;
+}
+
+h2 {
+	text-align: center;
+	padding: 30px;
+}
+
+.imgWidth {
+	width: 200px;
+	height: 300px;
+}
+
+#content a, #category_div a {
+	color: black;
+	text-shadow: 1px 2px 2px white;
+}
+
+#buttons button {
+	margin-bottom: 20px;
+}
+
+#checkOut {
+	float: right;
+}
+
+.table span {
+	font-size: 1.3em;
+}
+
+.table button {
+	margin-top: .3rem;
+	margin-left: 1rem;
+}
