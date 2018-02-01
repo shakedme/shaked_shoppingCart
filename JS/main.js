@@ -188,6 +188,7 @@ function CartManager() {
     //Add click listener for deleting specific book from cart
 
     this.deleteSpecific = function() {
+    	var that = this;
         $(document).on('click', '.delSpecific', function() {
             $(this).parent().remove();
             var key = $(this).siblings('.book_id').text();
